@@ -1,26 +1,31 @@
 # 小红书图文生成器 (XHS Graphic Generator)
 
-一个 AI Agent Skill，用于将主题或文章转化为 5-18 张精美的小红书图文卡片（3:4 竖版，2K 分辨率）。
+一个 AI Agent Skill，根据用户提供的 Markdown 内容，自动匹配大学图片，生成小红书风格的 HTML 图文卡片（3:4 竖版，2K 分辨率）。
 
 ## 功能特点
 
-- 📝 **双模式输入**：支持主题模式（自由规划）和改写模式（提取核心）
-- 🎨 **五种视觉风格**：清新自然、简约卡片、奶油治愈、知识卡片、科技简约
-- 📐 **小红书标准**：3:4 竖版比例，2K 分辨率
-- 🔧 **完整工作流**：从内容规划到 Prompt 生成到图片产出
+- 🎓 **大学图片库**：内置 39 所985大学资料和校园图片
+- 🎨 **五种视觉风格**：青春活力、专业权威、简约现代、学院复古、清新自然
+- 📐 **小红书标准**：3:4 竖版比例，2K 分辨率 (1536×2048px)
+- 🖼️ **背景图片库**：50+ 精美背景模板可供选择
+- 🔄 **内容驱动**：根据内容自动匹配图片和风格
 
 ## 目录结构
 
 ```
 xhs-graphic-generator/
-├── SKILL.md              # Agent Skill 主文件 - 定义工作流程
-├── scripts/
-│   └── generate.sh       # 图片生成脚本 (调用 API)
+├── SKILL.md                    # Agent Skill 主文件 - 定义工作流程
 ├── references/
-│   ├── prompt-guide.md   # Prompt 编写规范与示例
-│   ├── styles.md         # 视觉风格配色方案
-│   └── content-planning.md  # 内容规划方法论
-├── .env.example          # 环境变量模板
+│   ├── prompt-guide.md         # Prompt 编写规范与 HTML 模板
+│   ├── styles.md               # 视觉风格配色方案与布局
+│   ├── content-planning.md     # 内容规划方法论
+│   ├── bg/                     # 背景图片库 (50+ 张)
+│   └── universities/           # 大学图片库 (39 所985大学)
+│       ├── 浙江大学/
+│       ├── 清华大学/
+│       └── ...
+├── output/                     # 生成输出目录
+├── .env.example               # 环境变量模板
 └── README.md
 ```
 
@@ -30,74 +35,69 @@ xhs-graphic-generator/
 
 ```bash
 cp .env.example .env
-# 编辑 .env 文件，填入你的 API Key
+# 编辑 .env 文件，填入你的 NVIDIA API Key
 ```
 
-### 2. 使用脚本生成图片
+### 2. 使用方式
 
-```bash
-bash scripts/generate.sh "your prompt here" "3:4" "2K"
-```
+作为 iFlow CLI 的 Agent Skill 使用，当需要生成小红书图文时自动触发。
 
-## API 配置说明
+## 图片资源
 
-> ⚠️ **重要提示**：本项目目前使用的是 **[Mulerun](https://mulerun.com)** 提供的 API 接口。
+### 大学图片库
 
-### 当前配置 (Mulerun)
+已内置 39 所985大学的资料：
+- 清华大学、北京大学、浙江大学、上海交通大学、复旦大学
+- 南京大学、中国人民大学、武汉大学、中山大学、西安交通大学
+- 华中科技大学、哈尔滨工业大学、北京航空航天大学、天津大学
+- ... 等 39 所
 
-- API 端点：`https://api.mulerun.com/vendors/google/v1/nano-banana-pro/generation`
-- 认证方式：Bearer Token
-- 环境变量：`MULERUN_API_KEY`
+### 背景图片库
 
-### 使用其他 API 提供商
+`references/bg/` 包含 50+ 张背景图片，按风格分类：
+- bg_1~bg_10：青春活力风格（明亮暖色系）
+- bg_11~bg_20：专业权威风格（深蓝、金色系）
+- bg_21~bg_30：简约现代风格（白色、浅灰、几何）
+- bg_31~bg_36：学院复古风格（复古纹理、边框）
+- bg_37~bg_50：清新自然风格（自然、艺术边框）
 
-如果你使用的是 **官方 API** 或 **OpenRouter** 等其他服务商，需要修改 `scripts/generate.sh` 中的以下部分：
-
-```bash
-# 修改 API 端点
-API_URL="https://your-api-endpoint.com/v1/generate"
-
-# 可能需要调整请求格式
-# 查看你的 API 文档，修改 curl 请求的 JSON 结构
-```
-
-**常见替代方案：**
-
-| 提供商 | 端点格式 | 备注 |
-|--------|----------|------|
-| Google 官方 | `https://generativelanguage.googleapis.com/v1beta/...` | 需要 Google Cloud 账号 |
-| OpenRouter | `https://openrouter.ai/api/v1/...` | 统一接口，支持多模型 |
-| Replicate | `https://api.replicate.com/v1/...` | 按运行次数计费 |
-
-## 作为 Agent Skill 使用
-
-将此目录放入你的 Agent 的 skills 目录中，Agent 会自动识别并在以下场景触发：
-
-- 用户请求生成"小红书图文"、"红书笔记"
-- 用户说"制作小红书帖子"、"生成 XHS 图片"
-- 用户提供主题/文章要求转化为小红书格式
-
-## 风格速查
+## 视觉风格
 
 | 风格 | 主色 | 强调色 | 适用场景 |
 |------|------|--------|----------|
-| 清新自然 | #FAF9F7 | #B8E0D2, #5ABAB7 | 生活方式、好物分享 |
-| 简约卡片 | #FFFFFF | #E8E8E8 | 教程、科普、技术 |
-| 奶油治愈 | #FDF8F3 | #C4A77D | 情感类、慢生活 |
-| 知识卡片 | #F5F0E8 | #8B7355 | 技术教程、深度分析 |
-| 科技简约 | #1E293B | #7C3AED, #6366F1 | AI 工具、开发者内容 |
+| 青春活力 | #FFF7ED | #F97316, #FB923C | 校园生活、社团活动 |
+| 专业权威 | #1E3A5F | #3B82F6, #F59E0B | 排名数据、官方介绍 |
+| 简约现代 | #FFFFFF | #6366F1, #10B981 | 教程、科普、技术 |
+| 学院复古 | #F5F0E6 | #8B4513, #2F4F4F | 历史名校、文化底蕴 |
+| 清新自然 | #FAF9F7 | #B8E0D2, #5ABAB7 | 校园风景、环境介绍 |
 
-## 退出码说明
+## 输出格式
 
-脚本执行后会返回以下退出码：
+生成的 HTML 文件存放在以时间命名的子文件夹中：
 
-| 退出码 | 含义 |
-|--------|------|
-| 0 | 成功生成图片 |
-| 1 | 任务创建失败（API 错误） |
-| 2 | 图片生成失败 |
-| 3 | 内容被安全过滤器阻止 |
-| 4 | 任务超时（6分钟） |
+```
+output/
+└── 20240309153045/          # 生成时间：年月日时分秒
+    ├── P1-cover.html         # 封面
+    ├── P2-content.html       # 内容图1
+    ├── P3-content.html       # 内容图2
+    └── ...
+```
+
+用户可自行将 HTML 转换为 PNG（使用浏览器截图、Puppeteer 等工具）。
+
+## API 配置
+
+使用 NVIDIA API 调用大模型。
+
+```bash
+# .env 文件配置
+NVIDIA_API_KEY="your-nvidia-api-key"
+NVIDIA_BASE_URL="https://integrate.api.nvidia.com/v1"
+
+# 优先模型
+KIMI_MODEL="moonshotai/kimi-k2-0711-preview"
+```
 
 ## License
 
