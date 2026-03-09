@@ -11,6 +11,10 @@
 *.webp
 output/
 
+# 但保留 bg 图片库
+!references/bg/*.jpg
+!references/bg/*.png
+
 # IDE
 .idea/
 .vscode/

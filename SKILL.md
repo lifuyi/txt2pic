@@ -14,6 +14,29 @@ description: |
 
 **语言一致性**：生成的内容文字应与用户输入的文字保持一致，**除非用户明确指定需要特定语言**。例如：用户输入中文则保持中文，用户输入英文则保持英文。
 
+## 品牌配置
+
+**品牌名称**: UniseekChina
+
+**品牌标签**: #UniseekChina
+
+### 品牌标签使用规则
+
+在生成小红书图文时，根据内容类型决定是否添加品牌标签：
+
+| 内容类型 | 是否添加 #UniseekChina | 位置 |
+|----------|------------------------|------|
+| 大学招生信息 | ✅ 添加 | 底部标签区域 |
+| 留学干货分享 | ✅ 添加 | 底部标签区域 |
+| 校园生活介绍 | ✅ 添加 | 底部标签区域 |
+| 纯个人/非品牌内容 | ❌ 不添加 | - |
+
+**添加方式**: 在 HTML 底部 footer/hashtags 区域添加品牌标签
+```html
+<div class="hashtags">#UniseekChina #StudyInChina #其他标签</div>
+```
+**优先级**: 品牌标签 #UniseekChina 应放在标签列表首位或显眼位置
+
 ## 输入与输出
 
 ### 输入
@@ -171,7 +194,7 @@ output/
 ```
 
 **HTML 设计要点**：
-- 尺寸：1536 × 2048 px（3:4 @ 2K）
+- 尺寸：1080 × 1350 px（4:5 IG标准竖版）或 1536 × 2048 px（3:4 @ 2K）
 - 字体：中文用系统默认或思源黑体/苹方
 - 圆角：8-24px，保持柔和感
 - 阴影：轻柔阴影提升层次
@@ -188,11 +211,92 @@ output/
 
 - 在 `output/时间戳/` 文件夹中生成所有 HTML 文件（如 `output/20240309153045/`）
 - 提供帖子标题 + 正文 + 话题标签
-- 用户可自行将 HTML 转换为 PNG
+
+### 7. 自动转换 HTML 为 PNG
+
+**使用 Python + Playwright 自动将所有 HTML 文件转换为 PNG 图片**。
+
+#### 转换脚本
+
+```python
+# html_to_png.py
+import asyncio
+from playwright.async_api import async_playwright
+import os
+from pathlib import Path
+
+async def html_to_png(html_path: str, output_path: str):
+    """将单个 HTML 文件转换为 PNG"""
+    async with async_playwright() as p:
+        browser = await p.chromium.launch()
+        page = await browser.new_page()
+        await page.set_viewport_size({"width": 1536, "height": 2048})
+        await page.goto(f"file://{html_path}")
+        await page.screenshot(path=output_path, full_page=False)
+        await browser.close()
+        print(f"✓ Generated: {output_path}")
+
+async def convert_folder(folder_path: str):
+    """转换文件夹中所有 HTML 文件"""
+    folder = Path(folder_path)
+    html_files = sorted(folder.glob("*.html"))
+    
+    if not html_files:
+        print(f"No HTML files found in {folder_path}")
+        return
+    
+    print(f"Converting {len(html_files)} HTML files to PNG...")
+    
+    for html_file in html_files:
+        png_name = html_file.stem + ".png"
+        png_path = folder / png_name
+        await html_to_png(str(html_file), str(png_path))
+    
+    print(f"\nAll done! PNG files saved to: {folder_path}")
+
+if __name__ == "__main__":
+    import sys
+    
+    if len(sys.argv) > 1:
+        folder_path = sys.argv[1]
+    else:
+        # 使用最新的输出文件夹
+        output_dir = Path("output")
+        folders = [f for f in output_dir.iterdir() if f.is_dir()]
+        if not folders:
+            print("No output folders found!")
+            exit(1)
+        folder_path = max(folders, key=lambda x: x.stat().st_mtime)
+    
+    asyncio.run(convert_folder(folder_path))
+```
+
+#### 运行方式
+
+```bash
+# 转换指定文件夹
+python html_to_png.py output/20240309153045
+
+# 自动转换最新的输出文件夹
+python html_to_png.py
+```
+
+#### 输出结果
+
+转换完成后，`output/时间戳/` 文件夹将包含：
+```
+output/
+└── 20240309153045/
+    ├── P1-cover.html
+    ├── P1-cover.png      # ← 生成的图片
+    ├── P2-content.html
+    ├── P2-content.png    # ← 生成的图片
+    └── ...
+```
 
 ---
 
-## HTML 转 PNG 方式
+## HTML 转 PNG 方式（备选）
 
 用户可选择以下方式将 HTML 转为图片：
 
@@ -300,3 +404,14 @@ KIMI_MODEL="moonshotai/kimi-k2-0711-preview"
 | 简约现代 | #FFFFFF | #6366F1, #10B981 |
 | 学院复古 | #F5F0E6 | #8B4513, #2F4F4F |
 | 清新自然 | #FAF9F7 | #B8E0D2, #5ABAB7 |
+| 科技蓝 | #3b82f6 | #d54b97, #c17400, #00a875 |
+| 天空蓝渐变 | #539bff | #aacfff, #003baa, #000079 |
+| 紫金绿 | #3b82f6 | #b759cc, #c17400, #3ba01b |
+| 紫橙黄绿 | #3b82f6 | #886cee, #c17400, #908e00 |
+| 五彩斑斓 | #3b82f6 | #c553b9, #de5500, #849200, #00a89c |
+| 青蓝紫橙 | #0097e1 | #3b82f6, #886cee, #c17400 |
+
+**应用建议**：
+- **单卡片单主题**：每张卡片使用一套完整配色方案
+- **多卡片系列**：同一系列的多张卡片应采用**同一色系**的配色，保持视觉一致性，如封面和内容页都用蓝紫色系
+- **内容匹配**：根据内容调性选择主题（数据→蓝系，活动→橙系，学术→紫系）
