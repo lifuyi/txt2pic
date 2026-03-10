@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>中国风 SVG 背景图集 - 春回大地</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Noto Serif SC', 'SimSun', serif; }
+        .writing-vertical { writing-mode: vertical-rl; }
+        /* 隐藏滚动条让卡片更干净 */
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 4px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+    </style>
+</head>
+<body class="bg-[#f2efe9] text-gray-800 py-12 px-4 sm:px-8 min-h-screen">
+    <div class="max-w-7xl mx-auto">
+        <header class="text-center mb-16">
+            <h1 class="text-4xl md:text-5xl font-bold mb-6 tracking-widest text-[#362923]">春回大地 SVG 集</h1>
+            <p class="text-gray-600 text-lg">基于视觉参考图重新设计，比例 1080×1920 (9:16)。<br>适合文化宣传、社交媒体海报及手机壁纸。</p>
+        </header>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
+            
+            <!-- 卡片 1：日出青岚 -->
+            <div class="bg-white rounded-xl shadow-lg overflow-hidden border border-[#e5e0d8] flex flex-col hover:shadow-2xl transition-shadow duration-300">
+                <div class="relative w-full aspect-[9/16] bg-gray-50">
+                    <div class="svg-container absolute inset-0 w-full h-full">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 1920" width="100%" height="100%">
+                            <rect width="1080" height="1920" fill="#f8f6f0"/>
+                            <!-- 红日 -->
+                            <circle cx="250" cy="300" r="120" fill="#e64a19" opacity="0.9"/>
+                            
+                            <!-- 远山 -->
+                            <path d="M 0 1200 Q 200 1000, 450 1150 T 800 1050 T 1080 1150 L 1080 1920 L 0 1920 Z" fill="#b2dfdb" opacity="0.6"/>
+                            <!-- 近山 -->
+                            <path d="M 0 1450 Q 300 1300, 540 1500 T 1080 1400 L 1080 1920 L 0 1920 Z" fill="#4db6ac" opacity="0.8"/>
+                            
+                            <!-- 飞鸟 -->
+                            <path d="M 600 350 Q 615 330, 630 350 M 630 350 Q 645 330, 660 350" stroke="#333" stroke-width="3" fill="none"/>
+                            <path d="M 720 420 Q 735 400, 750 420 M 750 420 Q 765 400, 780 420" stroke="#333" stroke-width="2" fill="none"/>
+                            <path d="M 500 480 Q 510 470, 520 480 M 520 480 Q 530 470, 540 480" stroke="#333" stroke-width="2" fill="none"/>
+                        </svg>
+                    </div>
+                    <div class="absolute bottom-20 right-10 flex flex-col items-center pointer-events-none writing-vertical">
+                        <h3 class="text-3xl font-bold text-[#00695c] tracking-widest">日出东方</h3>
+                        <p class="text-[#362923] mt-4 tracking-widest text-lg">两岸猿声啼不住<br>轻舟已过万重山</p>
+                    </div>
+                </div>
+                <div class="p-4 flex flex-col items-center bg-[#faf9f6]">
+                    <h2 class="font-bold text-[#362923]">日出青岚</h2>
+                    <button onclick="copySVG(this)" class="mt-3 w-full py-2 border border-[#a68a5c] text-[#a68a5c] hover:bg-[#a68a5c] hover:text-white rounded transition-colors text-sm font-medium">复制代码</button>
+                </div>
+            </div>
+
+            <!-- 卡片 2：红梅报春 -->
+            <div class="bg-white rounded-xl shadow-lg overflow-hidden border border-[#e5e0d8] flex flex-col hover:shadow-2xl transition-shadow duration-300">
+                <div class="relative w-full aspect-[9/16] bg-gray-50">
+                    <div class="svg-container absolute inset-0 w-full h-full">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 1920" width="100%" height="100%">
+                            <rect width="1080" height="1920" fill="#fdfaf5"/>
+                            <!-- 枝干 -->
+                            <path d="M 1080 600 C 800 550, 600 800, 400 700 C 200 600, 100 800, 0 750" stroke="#4e342e" stroke-width="10" fill="none"/>
+                            <path d="M 750 620 C 700 400, 650 300, 550 200" stroke="#4e342e" stroke-width="6" fill="none"/>
+                            
+                            <!-- 繁花 (参考图中较密的布局) -->
+                            <g fill="#d32f2f">
+                                <circle cx="750" cy="620" r="25"/> <circle cx="770" cy="600" r="18"/>
+                                <circle cx="680" cy="520" r="22"/> <circle cx="600" cy="740" r="20"/>
+                                <circle cx="450" cy="720" r="28"/> <circle cx="420" cy="680" r="15"/>
+                                <circle cx="200" cy="650" r="24"/> <circle cx="580" cy="250" r="20"/>
+                                <circle cx="100" cy="780" r="18"/>
+                            </g>
+                            <!-- 花蕊点缀 -->
+                            <g fill="#ffeb3b">
+                                <circle cx="750" cy="620" r="4"/> <circle cx="450" cy="720" r="5"/>
+                                <circle cx="200" cy="650" r="4"/>
+                            </g>
+                        </svg>
+                    </div>
+                    <div class="absolute top-20 left-10 flex flex-col items-center pointer-events-none writing-vertical">
+                        <h3 class="text-3xl font-bold text-[#b71c1c] tracking-widest">红梅报春</h3>
+                        <p class="text-[#4e342e] mt-4 tracking-widest text-lg">俏也不争春<br>只把春来报</p>
+                    </div>
+                </div>
+                <div class="p-4 flex flex-col items-center bg-[#faf9f6]">
+                    <h2 class="font-bold text-[#362923]">红梅映雪</h2>
+                    <button onclick="copySVG(this)" class="mt-3 w-full py-2 border border-[#a68a5c] text-[#a68a5c] hover:bg-[#a68a5c] hover:text-white rounded transition-colors text-sm font-medium">复制代码</button>
+                </div>
+            </div>
+
+            <!-- 卡片 3：幽谷兰草 -->
+            <div class="bg-white rounded-xl shadow-lg overflow-hidden border border-[#e5e0d8] flex flex-col hover:shadow-2xl transition-shadow duration-300">
+                <div class="relative w-full aspect-[9/16] bg-gray-50">
+                    <div class="svg-container absolute inset-0 w-full h-full">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 1920" width="100%" height="100%">
+                            <rect width="1080" height="1920" fill="#f5f5f5"/>
+                            <!-- 底部岩石 -->
+                            <path d="M 0 1920 L 0 1700 L 200 1650 L 400 1750 L 700 1680 L 1080 1800 L 1080 1920 Z" fill="#9e9e9e" opacity="0.3"/>
+                            
+                            <!-- 兰草叶子 (细长曲线) -->
+                            <g stroke="#2e7d32" stroke-width="3" fill="none">
+                                <path d="M 200 1700 C 150 1400, 300 1200, 500 1100" />
+                                <path d="M 220 1710 C 250 1500, 400 1400, 600 1350" />
+                                <path d="M 180 1690 C 100 1500, 150 1300, 100 1150" />
+                                <path d="M 210 1705 C 300 1600, 500 1550, 700 1600" />
+                            </g>
+                            
+                            <!-- 兰花点缀 -->
+                            <circle cx="480" cy="1120" r="8" fill="#81c784" opacity="0.8"/>
+                            <circle cx="580" cy="1360" r="6" fill="#81c784" opacity="0.8"/>
+                            
+                            <!-- 背景装饰 -->
+                            <circle cx="800" cy="400" r="250" fill="#e0e0e0" opacity="0.4"/>
+                        </svg>
+                    </div>
+                    <div class="absolute top-32 right-12 flex flex-col items-center pointer-events-none writing-vertical">
+                        <h3 class="text-3xl font-bold text-[#1b5e20] tracking-widest">空谷幽兰</h3>
+                        <p class="text-[#424242] mt-6 tracking-widest text-lg">幽兰生前庭<br>含薰待清风</p>
+                    </div>
+                </div>
+                <div class="p-4 flex flex-col items-center bg-[#faf9f6]">
+                    <h2 class="font-bold text-[#362923]">幽谷兰草</h2>
+                    <button onclick="copySVG(this)" class="mt-3 w-full py-2 border border-[#a68a5c] text-[#a68a5c] hover:bg-[#a68a5c] hover:text-white rounded transition-colors text-sm font-medium">复制代码</button>
+                </div>
+            </div>
+
+            <!-- 卡片 4：春晖垂柳 -->
+            <div class="bg-white rounded-xl shadow-lg overflow-hidden border border-[#e5e0d8] flex flex-col hover:shadow-2xl transition-shadow duration-300">
+                <div class="relative w-full aspect-[9/16] bg-gray-50">
+                    <div class="svg-container absolute inset-0 w-full h-full">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 1920" width="100%" height="100%">
+                            <rect width="1080" height="1920" fill="#f0f7f4"/>
+                            <!-- 远景微山 -->
+                            <path d="M 0 1600 C 400 1550, 700 1650, 1080 1580 L 1080 1920 L 0 1920 Z" fill="#c8e6c9" opacity="0.4"/>
+                            
+                            <!-- 垂柳枝干 (位于侧边) -->
+                            <path d="M 1080 100 Q 900 150, 950 600" stroke="#6d4c41" stroke-width="8" fill="none"/>
+                            
+                            <!-- 柳条 -->
+                            <g stroke="#4caf50" stroke-width="1.5" fill="none" opacity="0.7">
+                                <path d="M 950 200 Q 800 600, 850 1100" />
+                                <path d="M 920 250 Q 750 700, 800 1200" />
+                                <path d="M 980 180 Q 880 500, 920 900" />
+                                <path d="M 1000 300 Q 900 800, 950 1300" />
+                            </g>
+                            
+                            <!-- 柳叶细节 -->
+                            <ellipse cx="820" cy="800" rx="4" ry="12" fill="#81c784" transform="rotate(-10, 820, 800)"/>
+                            <ellipse cx="780" cy="1000" rx="3" ry="10" fill="#81c784" transform="rotate(-15, 780, 1000)"/>
+                            <ellipse cx="880" cy="600" rx="3" ry="10" fill="#81c784" transform="rotate(-5, 880, 600)"/>
+                        </svg>
+                    </div>
+                    <div class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none writing-vertical">
+                        <h3 class="text-3xl font-bold text-[#2e7d32] tracking-[0.5em]">春晖盎然</h3>
+                        <p class="text-[#388e3c] mt-10 tracking-widest text-lg">不知细叶谁裁出<br>二月春风似剪刀</p>
+                    </div>
+                </div>
+                <div class="p-4 flex flex-col items-center bg-[#faf9f6]">
+                    <h2 class="font-bold text-[#362923]">春晖垂柳</h2>
+                    <button onclick="copySVG(this)" class="mt-3 w-full py-2 border border-[#a68a5c] text-[#a68a5c] hover:bg-[#a68a5c] hover:text-white rounded transition-colors text-sm font-medium">复制代码</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        function copySVG(btn) {
+            const card = btn.closest('.bg-white');
+            const svgContainer = card.querySelector('.svg-container');
+            const svgHTML = svgContainer.innerHTML.trim();
+            const textarea = document.createElement('textarea');
+            textarea.value = svgHTML;
+            textarea.style.position = 'fixed';
+            textarea.style.opacity = '0';
+            document.body.appendChild(textarea);
+            textarea.select();
+            try {
+                document.execCommand('copy');
+                const originalText = btn.innerHTML;
+                btn.innerHTML = '已复制！';
+                btn.classList.add('bg-[#8bb3a4]', 'border-[#8bb3a4]', 'text-white');
+                setTimeout(() => {
+                    btn.innerHTML = originalText;
+                    btn.classList.remove('bg-[#8bb3a4]', 'border-[#8bb3a4]', 'text-white');
+                }, 2000);
+            } catch (err) {
+                console.error('复制失败');
+            }
+            document.body.removeChild(textarea);
+        }
+    </script>
+</body>
+</html>

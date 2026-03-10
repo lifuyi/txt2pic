@@ -1,103 +1,174 @@
 # 小红书图文生成器 (XHS Graphic Generator)
 
-一个 AI Agent Skill，根据用户提供的 Markdown 内容，自动匹配大学图片，生成小红书风格的 HTML 图文卡片（3:4 竖版，2K 分辨率）。
+将 Markdown 内容转换为小红书风格的 HTML 图文卡片。基于**主题配色系统**实现视觉设计，支持自动转换为 PNG 图片。
 
-## 功能特点
+## 核心特性
 
-- 🎓 **大学图片库**：内置 39 所985大学资料和校园图片
-- 🎨 **五种视觉风格**：青春活力、专业权威、简约现代、学院复古、清新自然
-- 📐 **小红书标准**：3:4 竖版比例，2K 分辨率 (1536×2048px)
-- 🖼️ **背景图片库**：50+ 精美背景模板可供选择
-- 🔄 **内容驱动**：根据内容自动匹配图片和风格
-
-## 目录结构
-
-```
-xhs-graphic-generator/
-├── SKILL.md                    # Agent Skill 主文件 - 定义工作流程
-├── references/
-│   ├── prompt-guide.md         # Prompt 编写规范与 HTML 模板
-│   ├── styles.md               # 视觉风格配色方案与布局
-│   ├── content-planning.md     # 内容规划方法论
-│   ├── bg/                     # 背景图片库 (50+ 张)
-│   └── universities/           # 大学图片库 (39 所985大学)
-│       ├── 浙江大学/
-│       ├── 清华大学/
-│       └── ...
-├── output/                     # 生成输出目录
-├── .env.example               # 环境变量模板
-└── README.md
-```
+- 🎨 **16种主题配色**：基于中国风水墨画的配色系统（太极锦鲤、青绿山水、傲骨寒梅等）
+- 📐 **标准尺寸**：1080×1440px（3:4 竖版），适配小红书/Instagram
+- 🔄 **自动化流程**：Markdown → HTML → PNG 一键转换
+- 🎓 **大学内容支持**：内置39所中国大学资料库
+- ✨ **CSS驱动设计**：纯CSS实现视觉效果，无需背景图片
 
 ## 快速开始
 
-### 1. 配置 API Key
+### 1. 环境准备
 
 ```bash
-cp .env.example .env
-# 编辑 .env 文件，填入你的 NVIDIA API Key
+# 创建虚拟环境
+python3 -m venv venv
+source venv/bin/activate  # macOS/Linux
+
+# 安装依赖
+pip install markdown playwright
+playwright install chromium
 ```
 
-### 2. 使用方式
+### 2. 生成图文卡片
 
-作为 iFlow CLI 的 Agent Skill 使用，当需要生成小红书图文时自动触发。
+```bash
+# 使用 render_cards.py 从 Markdown 生成 HTML
+source venv/bin/activate
+python render_cards.py your_content.md --theme professional
 
-## 图片资源
+# 或使用 html_to_png.py 将现有 HTML 转为 PNG
+python html_to_png.py output/20260309123456
+```
 
-### 大学图片库
+## 工作流程
 
-已内置 39 所985大学的资料：
-- 清华大学、北京大学、浙江大学、上海交通大学、复旦大学
-- 南京大学、中国人民大学、武汉大学、中山大学、西安交通大学
-- 华中科技大学、哈尔滨工业大学、北京航空航天大学、天津大学
-- ... 等 39 所
+```
+Markdown 内容
+    ↓
+分析内容主题
+    ↓
+选择视觉主题（16选1）
+    ↓
+生成 HTML 卡片
+    ↓
+转换为 PNG
+```
 
-### 背景图片库
+### 详细步骤
 
-`references/bg/` 包含 50+ 张背景图片，按风格分类：
-- bg_1~bg_10：青春活力风格（明亮暖色系）
-- bg_11~bg_20：专业权威风格（深蓝、金色系）
-- bg_21~bg_30：简约现代风格（白色、浅灰、几何）
-- bg_31~bg_36：学院复古风格（复古纹理、边框）
-- bg_37~bg_50：清新自然风格（自然、艺术边框）
+1. **分析 Markdown 内容**：识别主题、大学、关键信息点
+2. **选择主题配色**：从16个主题中选择最匹配的视觉风格
+3. **生成 HTML 文件**：每张卡片独立HTML，CSS内联，可直接预览
+4. **转换为 PNG**：使用 Playwright 批量转换
 
-## 视觉风格
+## 主题配色系统
 
-| 风格 | 主色 | 强调色 | 适用场景 |
-|------|------|--------|----------|
-| 青春活力 | #FFF7ED | #F97316, #FB923C | 校园生活、社团活动 |
-| 专业权威 | #1E3A5F | #3B82F6, #F59E0B | 排名数据、官方介绍 |
-| 简约现代 | #FFFFFF | #6366F1, #10B981 | 教程、科普、技术 |
-| 学院复古 | #F5F0E6 | #8B4513, #2F4F4F | 历史名校、文化底蕴 |
-| 清新自然 | #FAF9F7 | #B8E0D2, #5ABAB7 | 校园风景、环境介绍 |
+所有视觉设计必须基于以下16个主题：
 
-## 输出格式
+| 主题名称 | 风格特点 | 适用场景 |
+|----------|----------|----------|
+| **太极锦鲤** | 红黑白、动态平衡 | 招生类、祝福类内容 |
+| **日出青岚** | 红日、青绿山水 | 开篇封面、愿景展示 |
+| **红梅报春** | 红梅、暖棕枝干 | 新年祝福、春季招生 |
+| **青绿山水** | 传统青绿、山水意境 | 文化类、艺术类内容 |
+| **傲骨寒梅** | 梅花红、古雅棕 | 励志类、学术类内容 |
+| **古韵边框** | 古铜金、对称边框 | 证书类、荣誉展示 |
+| **春江水暖** | 暖黄、桃花橙粉 | 春季活动、招生季 |
+| **春山叠翠** | 嫩绿、山峦叠嶂 | 自然类、旅游类内容 |
+| **春晖大地** | 暖黄、翠绿山峦 | 希望类、成长类内容 |
+| **绿柳垂丝** | 清新绿、生机勃勃 | 校园风光、环境介绍 |
+| **春晖垂柳** | 淡绿、垂柳依依 | 毕业季、离别主题 |
+| **柳丝依依** | 翠绿、柳丝飘逸 | 校园生活、青春主题 |
+| **春山如黛** | 黛青、层山叠嶂 | 传统文化、诗词类 |
+| **江南烟雨** | 灰蓝、烟雨朦胧 | 文艺类、散文类内容 |
+| **梨花带雨** | 素雅白、雨丝灰 | 文艺类、情感类内容 |
+| **幽谷兰草** | 墨绿、岩石灰 | 高雅类、品质类内容 |
 
-生成的 HTML 文件存放在以时间命名的子文件夹中：
+### 主题选择指南
+
+| 内容类型 | 推荐主题 |
+|----------|----------|
+| 大学招生/宣传 | 太极锦鲤、日出青岚、红梅报春 |
+| 校园环境介绍 | 绿柳垂丝、春晖垂柳、柳丝依依 |
+| 传统文化/诗词 | 青绿山水、春山如黛、江南烟雨 |
+| 励志/学术类 | 傲骨寒梅、幽谷兰草、古韵边框 |
+| 春季活动/招生季 | 春江水暖、春山叠翠、春晖大地 |
+
+## 文件结构
+
+```
+xhs-graphic-generator/
+├── SKILL.md                    # Skill 定义文件（工作流程、主题配色）
+├── README.md                   # 本文件
+├── render_cards.py             # Markdown 转 HTML 渲染器
+├── html_to_png.py              # HTML 转 PNG 转换器
+├── economics_tiers.md          # 示例：经济学项目分层内容
+├── references/
+│   ├── prompt-guide.md         # HTML 模板规范
+│   ├── styles.md               # 视觉风格详解
+│   ├── content-planning.md     # 内容规划方法
+│   └── universities/           # 大学资料库（39所985大学）
+│       ├── FUDAN_复旦大学/
+│       ├── PKU_北京大学/
+│       └── ...
+├── output/                     # 输出目录
+│   └── 20260309123456/         # 时间戳命名的子文件夹
+│       ├── P1-cover.html
+│       ├── P1-cover.png
+│       ├── P2-content.html
+│       └── ...
+└── venv/                       # Python 虚拟环境
+```
+
+## 输出示例
 
 ```
 output/
-└── 20240309153045/          # 生成时间：年月日时分秒
-    ├── P1-cover.html         # 封面
-    ├── P2-content.html       # 内容图1
-    ├── P3-content.html       # 内容图2
-    └── ...
+└── 20260309224000/
+    ├── P1-cover.html          # 封面：主题标题
+    ├── P1-cover.png
+    ├── P2-c9-tier.html        # C9顶尖联盟
+    ├── P2-c9-tier.png
+    ├── P3-985-tier.html       # 985大学
+    ├── P3-985-tier.png
+    ├── P4-211-tier.html       # 211财经名校
+    ├── P4-211-tier.png
+    ├── P5-tips.html           # 申请建议
+    ├── P5-tips.png
+    ├── P6-locations.html      # 地理位置优势
+    └── P6-locations.png
 ```
 
-用户可自行将 HTML 转换为 PNG（使用浏览器截图、Puppeteer 等工具）。
+## Markdown 格式
 
-## API 配置
+```markdown
+---
+title: "The Tiers: C9 vs 985 vs Specialized Finance"
+subtitle: "Economics Programs & Official Portals"
+---
 
-使用 NVIDIA API 调用大模型。
+# 🎓 C9 Elite Tier
 
-```bash
-# .env 文件配置
-NVIDIA_API_KEY="your-nvidia-api-key"
-NVIDIA_BASE_URL="https://integrate.api.nvidia.com/v1"
+The pinnacle of Chinese economics education
 
-# 优先模型
-KIMI_MODEL="moonshotai/kimi-k2-0711-preview"
+▫️ **Fudan University** - C9/985
+▫️ **Peking University** - C9/985
+...
+
+---
+
+# ⭐ 985 Universities
+
+Economics powerhouses...
 ```
+
+## 技术栈
+
+- **Python 3.14+**：核心逻辑
+- **Playwright**：HTML 转 PNG 截图
+- **Markdown**：内容输入格式
+- **CSS3**：视觉效果（渐变、阴影、动画）
+
+## 品牌配置
+
+**品牌名称**: UniseekChina
+
+品牌标签 `#UniseekChina` 会自动添加到相关内容卡片底部。
 
 ## License
 
