@@ -10,7 +10,8 @@ def html_to_png(html_path: str, output_path: str):
     with sync_playwright() as p:
         browser = p.chromium.launch()
         page = browser.new_page()
-        page.set_viewport_size({"width": 1536, "height": 2048})
+        # 设置视口与 HTML 实际尺寸一致 (1080x1350)
+        page.set_viewport_size({"width": 1080, "height": 1350})
         page.goto(f"file://{os.path.abspath(html_path)}")
         page.screenshot(path=output_path, full_page=False)
         browser.close()
