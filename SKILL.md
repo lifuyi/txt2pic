@@ -8,7 +8,7 @@ description: |
 
 # 小红书图文生成
 
-根据用户提供的 Markdown 内容，自动从图片库匹配大学图片，生成小红书风格的 HTML 图文卡片（3:4竖版，2K分辨率）。内容驱动，形式跟随内容。
+根据用户提供的 Markdown 内容，自动从图片库匹配大学图片，生成小红书风格的 HTML 图文卡片（1080 × 1350 px，4:5 竖版）。内容驱动，形式跟随内容。
 
 ## 基本原则
 
@@ -139,7 +139,9 @@ description: |
 
 **必须遵守的规则**：
 1. **单系列单主题**：同一内容系列的所有卡片使用**同一主题**，保持视觉统一
-2. **CSS实现装饰**：使用CSS渐变、阴影、边框实现视觉效果，不依赖背景图片
+2. **视觉实现方式**：使用 CSS 渐变、阴影、边框实现配色主题。对于额外的装饰元素（如 SVG 图案），可根据需要选择：
+   - **推荐（简洁方案）**：仅使用 CSS 实现，不添加 SVG 背景图案，保持简洁高效
+   - **可选（复杂方案）**：如需额外的中国风装饰元素（山水、花卉等），可从 `references/bg/` 中复制对应主题的 SVG 代码嵌入 HTML，文字内容覆盖在 SVG 背景之上
 3. **配色一致性**：严格使用选定主题的配色变量，不随意更改色值
 4. **品牌融合**：将品牌色（如有）与主题色协调，或直接使用主题色作为品牌色
 
@@ -179,7 +181,7 @@ output/
 ```
 
 **HTML 设计要点**：
-- 尺寸：1080 × 1350 px（4:5 IG标准竖版）或 1536 × 2048 px（3:4 @ 2K）
+- 尺寸：**1080 × 1350 px**（4:5 小红书标准竖版）
 - 字体：中文用系统默认或思源黑体/苹方
 - 圆角：8-24px，保持柔和感
 - 阴影：轻柔阴影提升层次
@@ -215,9 +217,9 @@ async def html_to_png(html_path: str, output_path: str):
     async with async_playwright() as p:
         browser = await p.chromium.launch()
         page = await browser.new_page()
-        await page.set_viewport_size({"width": 1536, "height": 2048})
+        await page.set_viewport_size({"width": 1080, "height": 1350})
         await page.goto(f"file://{html_path}")
-        await page.screenshot(path=output_path, full_page=False)
+        await page.screenshot(path=output_path, clip={"x": 0, "y": 0, "width": 1080, "height": 1350})
         await browser.close()
         print(f"✓ Generated: {output_path}")
 
@@ -346,11 +348,19 @@ async function htmlToPng(htmlPath, outputPath) {
 
 ---
 
-## API 配置
+## API 配置（可选）
 
-使用 **NVIDIA API** 调用大模型，优先 **Kimi**。
+如果需要集成大模型进行内容分析或代码生成，可配置以下 API：
 
-### 环境变量
+### 支持的模型
+
+| 模型 | 用途 | 说明 |
+|------|------|------|
+| Kimi (moonshotai/kimi-k2-0711-preview) | 内容分析、HTML 代码生成 | 推荐用于自动化分析 Markdown 内容 |
+| GLM | 内容分析、HTML 代码生成 | 备选方案 |
+| DeepSeek | 内容分析、HTML 代码生成 | 备选方案 |
+
+### 环境变量配置（如需使用）
 
 ```bash
 # .env 文件配置
@@ -361,13 +371,7 @@ NVIDIA_BASE_URL="https://integrate.api.nvidia.com/v1"
 KIMI_MODEL="moonshotai/kimi-k2-0711-preview"
 ```
 
-### 支持的模型
-
-| 模型 | 用途 | 说明 |
-|------|------|------|
-| Kimi (moonshotai/kimi-k2-0711-preview) | **首选** | 内容分析、HTML 生成 |
-| GLM | 备选 | 内容分析、HTML 生成 |
-| DeepSeek | 备选 | 内容分析、HTML 生成 |
+**当前工具流程**：手动提供 Markdown 内容 → 工具自动生成 HTML → 自动转换为 PNG。暂不依赖大模型自动分析。
 
 ---
 
@@ -386,14 +390,12 @@ KIMI_MODEL="moonshotai/kimi-k2-0711-preview"
 
 ### 主题资源说明
 
-每个主题包含两部分：
-1. **配色方案**：背景色、主色调、辅助色等（见下表）
-2. **SVG装饰图案**：山水、花卉、锦鲤等中国风元素（见 `references/bg/bg1.html` - `bg4.html`）
+每个主题包含配色方案：背景色、主色调、辅助色、强调色、文字色等（见下表）。
 
 **使用规则**：
-- 除文字内容外，**SVG装饰图案必须完整保留**
-- 从 `references/bg/` 中复制对应主题的 SVG 代码嵌入 HTML
-- 文字内容覆盖在 SVG 背景之上
+- **核心做法**：根据主题配色方案，通过 CSS（渐变、阴影、边框）实现视觉效果
+- **可选装饰**：`references/bg/` 中包含各主题的 SVG 装饰图案（山水、花卉等）。如需额外装饰，可复制对应主题的 SVG 代码嵌入 HTML，文字内容覆盖在其上
+- **简洁原则**：如无特殊需求，推荐仅使用配色方案 + CSS 实现，保持页面简洁高效
 
 ### 主题列表
 
